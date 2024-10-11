@@ -10,7 +10,7 @@
     <footer>
       <p>
         &copy; Create by <a href="https://luxirty.com/posts/luxirty-search/" target="_blank">Luxirty</a> with &hearts; |
-        <a href="https://github.com/KoriIku/luxiry-search" target="_blank">
+        Open Source on <a href="https://github.com/KoriIku/luxiry-search" target="_blank">
           GitHub
         </a>
       </p>
@@ -21,9 +21,13 @@
 <script>
 export default {
   name: 'SearchPage',
+  props: ['query'],
   mounted() {
     this.loadGoogleCSE();
     this.setupResultsRenderedCallback();  // 注册渲染结果回调函数
+    if (!this.query) {
+      this.goHome();
+    }
   },
   methods: {
     loadGoogleCSE() {
@@ -44,7 +48,7 @@ export default {
       // 定义一个渲染回调函数，用于移除不需要的属性
       const myWebResultsRenderedCallback = () => {
         const links = document.querySelectorAll('a.gs-title');
-        
+
         links.forEach((anchor) => {
           // 移除 'data-cturl' 和 'data-ctorig' 属性
           anchor.removeAttribute('data-cturl');
@@ -92,7 +96,8 @@ export default {
   color: #58636f;
   margin-right: 20px;
   white-space: nowrap;
-  user-select: none;  /* 防止标题文字被选中 */
+  user-select: none;
+  /* 防止标题文字被选中 */
 }
 
 /* 针对小屏幕的样式 */
@@ -138,15 +143,29 @@ footer {
   margin-top: 36px;
 }
 
+/* 链接样式 */
 footer a {
-  color: #345a80;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  color: #156bc8; /* 白天模式下的鲜明蓝色 */
+  font-weight: bold; /* 加粗字体 */
+  transition: color 0.3s ease, text-shadow 0.3s ease; /* 添加文本阴影过渡 */
 }
 
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  footer {
+    background-color: #1a1a1a; /* 深色背景 */
+  }
+  
+  footer a {
+    color: #ffffff; /* 明亮的链接颜色 */
+  }
+}
+
+/* 鼠标悬停效果 */
 footer a:hover {
-  color: #1c3d5a;
-  text-decoration: underline;
+  color: #0056b3; /* 鼠标悬停时的深蓝色 */
+  text-decoration: underline; /* 添加下划线 */
+  text-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 鼠标悬停时添加阴影 */
 }
 
 footer img {
